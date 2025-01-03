@@ -1,0 +1,33 @@
+image: "gitlab.labci.com:5050/labci/docker-container/main"
+variables:
+    DEV_RELEASE_PATH: "/opt/nodejs/dev/"
+    UAT_RELEASE_PATH: "/opt/nodejs/uat/"
+    APP_NAME: "kgi-trader-api"
+    PM2_CONFIG: "pm2-config"
+    DEV_PM2_CONFIG_FILE: "dev.config.js"
+    UAT_PM2_CONFIG_FILE: "uat.config.js"
+
+stages:
+    - build
+    - deploy
+
+deploy_dev:
+    stage: deploy
+    tags:
+        - labci
+    script:
+        - echo -e "Generate environment from gitlab ci/cd"
+        - export NODE_ENV=development
+        - cd ../$APP_NAME && node tools/generateEnv.js
+        - echo -e "Delete old app on the server."
+        - sshpass -p $STAGING_PASSWORD ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p $STAGING_PORT $STAGING_USERNAME@$STAGING_ADDRESS "rm -rf $DEV_RELEASE_PATH/$APP_NAME"
+        - echo -e "Uploading the package"
+        - sshpass -p $STAGING_PASSWORD scp -r -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -P $STAGING_PORT ../$APP_NAME $STAGING_USERNAME@$STAGING_ADDRESS:$DEV_RELEASE_PATH
+        - echo -e "Install the dependencies"
+        - sshpass -p $STAGING_PASSWORD ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p $STAGING_PORT $STAGING_USERNAME@$STAGING_ADDRESS "cd $DEV_RELEASE_PATH/$APP_NAME && npm install"
+        - echo -e "start PM2 deploying"
+        - sshpass -p $STAGING_PASSWORD ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p $STAGING_PORT $STAGING_USERNAME@$STAGING_ADDRESS "pm2 start $DEV_RELEASE_PATH/$APP_NAME/$PM2_CONFIG/$DEV_PM2_CONFIG_FILE"
+        - echo -e "start PM2 save"
+        - sshpass -p $STAGING_PASSWORD ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p $STAGING_PORT $STAGING_USERNAME@$STAGING_ADDRESS "pm2 save"
+    only:
+        - dev
