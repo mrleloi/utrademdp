@@ -1,5 +1,8 @@
+import { BaseHttpService } from './base-http.service';
+import { Injectable } from '@nestjs/common';
+
 @Injectable()
-export class MarketDataHttpService extends BaseHttpService {
+export class UtradeApiHttpService extends BaseHttpService {
   constructor(endpoint: string) {
     super(endpoint);
   }

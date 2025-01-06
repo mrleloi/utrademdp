@@ -14,7 +14,7 @@ async function bootstrap() {
   const app = await NestFactory.create<INestApplication>(AppModule);
   initializeApp(app);
   initializeAppSwagger(app);
-  initializeApiSwagger(app);
+  initializeApiInnoDataSwagger(app);
 }
 
 async function initializeApp(app: INestApplication) {
@@ -92,8 +92,8 @@ function setDefaultResponses(
   });
 }
 
-function initializeApiSwagger(app: INestApplication) {
-  if (config.swagger.enabled !== 'true') {
+function initializeApiInnoDataSwagger(app: INestApplication) {
+  if (config.swaggerAPI.enabledApiInnoData !== 'true') {
     return;
   }
 

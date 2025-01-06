@@ -1,7 +1,10 @@
+import { BaseHttpService } from './base-http.service';
+import { Injectable } from '@nestjs/common';
+
 @Injectable()
 export class InnoDataHttpService extends BaseHttpService {
-  constructor() {
-    super(config.axios.innoDataEndpoint);
+  constructor(endpoint: string) {
+    super(endpoint);
   }
 
   async getQuote(token: string, ric: string): Promise<any> {

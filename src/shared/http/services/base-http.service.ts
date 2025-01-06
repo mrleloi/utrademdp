@@ -33,7 +33,11 @@ export class BaseHttpService {
     }
   }
 
-  async post<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  async post<T>(
+    url: string,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): Promise<T> {
     try {
       const response = await this.axios.post<T>(url, data, {
         ...config,

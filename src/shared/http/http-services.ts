@@ -1,19 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import { HttpService } from './http.service';
 import config from '@config/app.config';
-import { HttpKGIService } from './kgi.http.service';
+import { InnoDataHttpService } from './services/inno-data.http';
+import { UtradeApiHttpService } from './services/utrade-api.http';
 
 @Injectable()
 export class HttpServices {
-  public readonly watchlist: HttpService;
-  public readonly kgi: HttpKGIService;
-  public readonly trust: HttpKGIService;
-  public readonly market: HttpService;
+  public readonly innoData: InnoDataHttpService;
+  public readonly utradeHk: UtradeApiHttpService;
+  public readonly utradeSg: UtradeApiHttpService;
+  public readonly ufuture: UtradeApiHttpService;
 
   constructor() {
-    this.watchlist = new HttpService(config.axios.kgiWatchlistEndpoint);
-    this.kgi = new HttpKGIService(config.axios.kgiBaseEndpoint);
-    this.trust = new HttpKGIService(config.axios.kgiTrustEndpoint);
-    this.market = new HttpService(config.axios.marketApiEndpoint);
+    this.innoData = new InnoDataHttpService(config.axios.innoDataEndpoint);
+    this.utradeHk = new UtradeApiHttpService(config.axios.utradeHkEndpoint);
+    this.utradeSg = new UtradeApiHttpService(config.axios.utradeSgEndpoint);
+    this.ufuture = new UtradeApiHttpService(config.axios.ufutureEndpoint);
   }
 }

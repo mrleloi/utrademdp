@@ -30,8 +30,8 @@ import { InnoAuthController } from './controllers/inno-auth.controller';
 import { TokenDecoderService } from './services/token/token-decoder.service';
 import { SwaggerAPIModule } from '@modules/api-docs/swagger.module';
 import { ProxyModule } from '@modules/proxy/proxy.module';
-import { AuditInterceptor } from "@common/interceptors/audit.interceptor";
-import { LoggingInterceptor } from "@common/interceptors/logging.interceptor";
+import { AuditInterceptor } from '@common/interceptors/audit.interceptor';
+import { LoggingInterceptor } from '@common/interceptors/logging.interceptor';
 
 @Module({
   imports: [
