@@ -1,5 +1,4 @@
 import { Injectable, Logger, HttpException, HttpStatus } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { RedisService } from './redis.service';
 
@@ -10,20 +9,17 @@ export class InnoAuthService {
 
   constructor(
     private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
     private readonly redisService: RedisService,
   ) {}
 
   async authenticate(credentials: { username: string; password: string }) {
     try {
       // Check Redis cache first
-      const cachedToken = await this.redisService.get(
-        `inno_token:${credentials.username}`,
-      );
+      const cachedToken = await this.redisService.get(`inno_token:${credentials.username}`);
       if (cachedToken) {
         // Verify if cached token is still valid
         const decodedToken = this.jwtService.decode(cachedToken);
-        if (decodedToken['exp'] > Math.floor(Date.now() / 1000)) {
+        if (decodedToken && typeof decodedToken !== 'string' && decodedToken.exp > Math.floor(Date.now() / 1000)) {
           return { token: cachedToken };
         }
       }
@@ -47,17 +43,22 @@ export class InnoAuthService {
       // Get token from header
       const token = response.headers.get('token');
       if (!token) {
-        throw new HttpException('No token in response', HttpStatus.BAD_GATEWAY);
+        throw new HttpException(
+          'No token in response',
+          HttpStatus.BAD_GATEWAY,
+        );
       }
 
       // Cache the token
       const decodedToken = this.jwtService.decode(token);
-      const ttl = decodedToken['exp'] - Math.floor(Date.now() / 1000);
-      await this.redisService.set(
-        `inno_token:${credentials.username}`,
-        token,
-        ttl,
-      );
+      if (decodedToken && typeof decodedToken !== 'string') {
+        const ttl = decodedToken.exp - Math.floor(Date.now() / 1000);
+        await this.redisService.set(
+          `inno_token:${credentials.username}`,
+          token,
+          ttl
+        );
+      }
 
       return { token };
     } catch (error) {

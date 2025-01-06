@@ -1,5 +1,4 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { decrypt } from 'src/shared/helpers/encryption.helper';
 
 export const dbConfig: TypeOrmModuleOptions = {
   type: process.env.DB_TYPE as any,

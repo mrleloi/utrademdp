@@ -13,7 +13,8 @@ import * as bodyParser from 'body-parser';
 async function bootstrap() {
   const app = await NestFactory.create<INestApplication>(AppModule);
   initializeApp(app);
-  initializeSwagger(app);
+  initializeAppSwagger(app);
+  initializeApiSwagger(app);
 }
 
 async function initializeApp(app: INestApplication) {
@@ -32,7 +33,7 @@ async function initializeApp(app: INestApplication) {
   await app.listen(config.http.port);
 }
 
-function initializeSwagger(app: INestApplication) {
+function initializeAppSwagger(app: INestApplication) {
   if (config.swagger.enabled !== 'true') {
     return;
   }
@@ -88,6 +89,44 @@ function setDefaultResponses(
         ...document.paths[path][method].responses,
       };
     }
+  });
+}
+
+function initializeApiSwagger(app: INestApplication) {
+  if (config.swagger.enabled !== 'true') {
+    return;
+  }
+
+  const serviceName = config.app.name;
+  const serviceDescription = config.app.description;
+  const apiVersion = config.app.version;
+  const baseUrl = config.app.url;
+
+  const options = new DocumentBuilder()
+    .setTitle(`${serviceName} API spec`)
+    .setDescription(serviceDescription)
+    .addBearerAuth()
+    .setVersion(apiVersion)
+    .addServer(baseUrl)
+    .addApiKey(
+      { scheme: 'apikey', type: 'apiKey', in: 'header', name: 'x-api-key' },
+      'apikey',
+    )
+    .build();
+
+  const document = SwaggerModule.createDocument(app, options);
+
+  SwaggerModule.setup('/docs/innodata', app, document, {
+    swaggerOptions: {
+      displayOperationId: true,
+      urls: [
+        {
+          url: '/api-docs/innodata',
+          name: 'Inno Data API',
+        },
+      ],
+    },
+    customSiteTitle: 'MDP API Docs - Inno-data',
   });
 }
 

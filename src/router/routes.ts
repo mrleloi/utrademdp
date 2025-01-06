@@ -60,4 +60,36 @@ export const AppRoutes = {
   configuration: {
     tag: 'configuration',
   },
+
+  auth: {
+    tag: 'auth',
+    paths: {
+      innoData: 'inno-data',
+      utradeSg: 'utrade-sg',
+      utradeHk: 'utrade-hk',
+      ufuture: 'ufuture',
+    },
+  },
+  token: {
+    tag: 'token',
+    paths: {
+      decode: 'decode',
+      encode: 'encode',
+    },
+  },
+  permissions: {
+    tag: 'permissions',
+    paths: {
+      check: 'check',
+      grant: 'grant',
+      revoke: 'revoke',
+    },
+  },
+  audit: {
+    tag: 'audit',
+    paths: {
+      logs: 'logs',
+      statistics: 'statistics',
+    },
+  },
 };

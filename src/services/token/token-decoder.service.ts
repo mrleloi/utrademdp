@@ -3,6 +3,15 @@ import { ConfigService } from '@nestjs/config';
 import * as jwt from 'jsonwebtoken';
 import * as crypto from 'crypto';
 
+interface InnoDataJwtPayload {
+  sub: string;
+  username: string;
+  iat: number;
+  exp: number;
+  aud: string;
+  iss: string;
+}
+
 @Injectable()
 export class TokenDecoderService {
   private readonly logger = new Logger(TokenDecoderService.name);
@@ -14,20 +23,27 @@ export class TokenDecoderService {
     permissions: any;
   }> {
     try {
-      const decodedToken = jwt.verify(token,
+      const decodedToken = jwt.verify(
+        token,
         this.configService.get('INNOVATION_JWT_PRIVATE_KEY'),
         {
           issuer: this.configService.get('INNOVATION_JWT_ISSUER'),
           audience: this.configService.get('INNOVATION_JWT_AUDIENCE'),
-          algorithms: ['HS256']
-        }
+          algorithms: ['HS256'],
+        },
+      ) as InnoDataJwtPayload; // Type assertion here
+
+      this.logger.debug(
+        `Decoded Inno-data token: ${JSON.stringify(decodedToken)}`,
       );
 
-      this.logger.debug(`Decoded Inno-data token: ${JSON.stringify(decodedToken)}`);
-
       return {
-        userId: decodedToken.sub, // or however user ID is stored in token
-        permissions: decodedToken.permissions
+        userId: decodedToken.username || decodedToken.sub, // Using username or sub as userId
+        permissions: {
+          ...decodedToken,
+          // Omit sensitive or unnecessary information if needed
+          sub: undefined,
+        },
       };
     } catch (error) {
       this.logger.error(`Error decoding Inno-data token: ${error.message}`);
@@ -35,7 +51,10 @@ export class TokenDecoderService {
     }
   }
 
-  async decodeMarketDataToken(encryptedToken: string, secretKey: string): Promise<{
+  async decodeMarketDataToken(
+    encryptedToken: string,
+    secretKey: string,
+  ): Promise<{
     userId: string;
     broker: string;
     permissions: string;
@@ -53,11 +72,12 @@ export class TokenDecoderService {
       // Decrypt token
       const decrypted = Buffer.concat([
         decipher.update(encryptedBytes),
-        decipher.final()
+        decipher.final(),
       ]).toString('utf8');
 
       // Parse token parts
-      const [broker, userId, permissions, exchange, timestamp] = decrypted.split('|');
+      const [broker, userId, permissions, exchange, timestamp] =
+        decrypted.split('|');
 
       this.logger.debug(`Decoded Market Data token parts:
         Broker: ${broker}
@@ -72,78 +92,11 @@ export class TokenDecoderService {
         userId,
         permissions,
         exchange,
-        timestamp
+        timestamp,
       };
     } catch (error) {
       this.logger.error(`Error decoding Market Data token: ${error.message}`);
       throw error;
     }
-  }
-
-  // Helper to validate decoded permissions against request parameters
-  validatePermissions(decodedToken: any, requestParams: any): boolean {
-    // Implement permission validation logic based on your requirements
-    // For example, check if user has access to requested exchange, ticker, etc.
-    return true; // Placeholder
-  }
-}
-
-// Usage in middleware or guard
-@Injectable()
-export class TokenValidationMiddleware implements NestMiddleware {
-  constructor(
-    private tokenDecoderService: TokenDecoderService,
-    private cacheService: CacheService,
-  ) {}
-
-  async use(req: Request, res: Response, next: NextFunction) {
-    const token = req.headers.authorization?.split(' ')[1];
-    if (!token) {
-      throw new UnauthorizedException('No token provided');
-    }
-
-    try {
-      // Determine token type and decode accordingly
-      let userId: string;
-      let permissions: any;
-
-      if (this.isInnoDataRequest(req)) {
-        const decoded = await this.tokenDecoderService.decodeInnoDataToken(token);
-        userId = decoded.userId;
-        permissions = decoded.permissions;
-      } else {
-        const decoded = await this.tokenDecoderService.decodeMarketDataToken(
-          token,
-          this.getSecretKeyForRequest(req)
-        );
-        userId = decoded.userId;
-        permissions = decoded.permissions;
-      }
-
-      // Cache user info and permissions
-      await this.cacheService.set(`user:${userId}:permissions`, permissions);
-      await this.cacheService.set(`user:${userId}:last_access`, new Date().toISOString());
-
-      // Add to request for later use
-      req['userId'] = userId;
-      req['permissions'] = permissions;
-
-      next();
-    } catch (error) {
-      throw new UnauthorizedException('Invalid token');
-    }
-  }
-
-  private isInnoDataRequest(req: Request): boolean {
-    return req.path.includes('/inno-data');
-  }
-
-  private getSecretKeyForRequest(req: Request): string {
-    // Return appropriate secret key based on request path/type
-    if (req.path.includes('/ufuture')) {
-      return 'ZHxUt4D/O11veWDEkyNO8N0ndaoryPsH==';
-    }
-    // Add other secret keys as needed
-    return '';
   }
 }
