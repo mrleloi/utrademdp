@@ -1,3 +1,4 @@
+/*
 import { User } from '@modules/users/entities/users.entity';
 import {
   Entity,
@@ -26,3 +27,4 @@ export class TradeableSearchHistory {
   @JoinColumn({ name: 'user_id' })
   user: User;
 }
+*/

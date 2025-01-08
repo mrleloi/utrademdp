@@ -1,3 +1,4 @@
+/*
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { SearchService } from './search.service';
 import { AppRoutes } from 'src/router/routes';
@@ -72,3 +73,4 @@ export class SearchController {
     return { message: `Search history for user ${user_id} has been deleted.` };
   }
 }
+*/

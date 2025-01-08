@@ -1,3 +1,4 @@
+/*
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SearchHistory } from './entities/search.entity';
@@ -119,3 +120,4 @@ export class SearchService {
       .execute();
   }
 }
+*/

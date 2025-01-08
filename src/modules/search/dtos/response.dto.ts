@@ -1,3 +1,4 @@
+/*
 import { ApiProperty } from '@nestjs/swagger';
 
 export class SearchHistoryResponse {
@@ -39,3 +40,4 @@ export class DeleteTradeableSearchHistoryResponse {
   })
   message: string;
 }
+*/

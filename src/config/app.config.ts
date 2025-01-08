@@ -14,10 +14,6 @@ export default {
     port: `${process.env.PORT || 3057}`.trim(),
   },
   axios: {
-    innoDataEndpoint: `${[process.env.INNO_DATA_API_URL]}`.trim(),
-    utradeSgEndpoint: `${[process.env.UTRADE_SG_API_URL]}`.trim(),
-    utradeHkEndpoint: `${[process.env.UTRADE_HK_API_URL]}`.trim(),
-    ufutureEndpoint: `${[process.env.UFUTURE_API_URL]}`.trim(),
     timeout: 60000,
   },
   swagger: {
@@ -27,9 +23,21 @@ export default {
   },
   swaggerAPI: {
     enabledApiInnoData: process.env.SWAGGER_API_INNO_DATA_ENABLED || 'true',
+    pathYamlApiInnoData:
+      process.env.SWAGGER_API_INNO_DATA_PATH_YAML ||
+      'src/yaml/api-innodata-swagger.yaml',
     enabledApiUtradeSG: process.env.SWAGGER_API_UTRADE_SG_ENABLED || 'true',
+    pathYamlApiUtradeSG:
+      process.env.SWAGGER_API_UTRADE_SG_PATH_YAML ||
+      'src/yaml/api-utrade-sg-swagger.yaml',
     enabledApiUtradeHK: process.env.SWAGGER_API_UTRADE_HK_ENABLED || 'true',
+    pathYamlApiUtradeHK:
+      process.env.SWAGGER_API_UTRADE_HK_PATH_YAML ||
+      'src/yaml/api-utrade-hk-swagger.yaml',
     enabledApiUfuture: process.env.SWAGGER_API_UFUTURE_ENABLED || 'true',
+    pathYamlApiUfuture:
+      process.env.SWAGGER_API_UFUTURE_PATH_YAML ||
+      'src/yaml/api-ufuture-swagger.yaml',
   },
   logs: {
     path: process.env.LOG_PATH || './logs',

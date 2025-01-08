@@ -1,0 +1,199 @@
+openapi: 3.0.1
+info:
+  title: Ufuture API(Staging)
+  description: This is the swagger of Ufuture API including multiple endpoints for market screening and authentication.
+  version: UAT-1.3.4.2
+servers:
+  - url: https://t1hkhsm2.trkd-hs.com/ufuture/data/
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+security:
+  - bearerAuth: []
+tags:
+  - name: Auth
+    description: Authentication part.
+  - name: Screener
+    description: Market screening services.
+
+paths:
+  /auth/login:
+    get:
+      tags:
+        - Auth
+      summary: Generate Utrade token with payload
+      description: Return generated Utrade token.
+      operationId: generateToken
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: uid
+          in: query
+          description: UID
+          required: true
+          schema:
+            type: string
+        - name: pwd
+          in: query
+          description: PWD
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Request response.
+  /data/search/result:
+    post:
+      tags:
+        - Screener
+      summary: Search for market data based on criteria
+      description: Returns a list of market data based on the provided search criteria.
+      operationId: searchMarketData
+      security:
+        - bearerAuth: []
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      requestBody:
+        description: Search criteria for the market data
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                page:
+                  type: integer
+                  example: 1
+                size:
+                  type: integer
+                  example: 10
+                keyword:
+                  type: string
+                  example: "tech"
+                exchange:
+                  type: array
+                  items:
+                    type: string
+                  example: ["ARCA", "ASE", "HKG"]
+                sector:
+                  type: array
+                  items:
+                    type: string
+                  example: ["50", "57"]
+                mktcap:
+                  type: array
+                  items:
+                    type: string
+                  example: ["small", "mid", "large"]
+                per:
+                  type: object
+                  properties:
+                    fr:
+                      type: string
+                    to:
+                      type: string
+                  example: { fr: "1", to: "10" }
+                # Add other fields similarly
+      responses:
+        200:
+          description: Successfully retrieved the market data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  responseCode:
+                    type: integer
+                    example: 0
+                  data:
+                    type: object
+                    properties:
+                      totalCount:
+                        type: integer
+                        example: 82
+                      page:
+                        type: integer
+                        example: 1
+                      result:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            ric:
+                              type: string
+                              example: "AAPL.O"
+                            name:
+                              type: string
+                              example: "Apple Inc"
+                            exchangeCode:
+                              type: string
+                              example: "NMS"
+                            exchange:
+                              type: string
+                              example: "NASDAQ"
+        400:
+          description: Bad request due to invalid parameters
+        500:
+          description: Internal server error
+  /data/search/criteria:
+    get:
+      tags:
+        - Screener
+      summary: Retrieve minimum and maximum values for specified criteria
+      description: Returns the minimum and maximum values for a specified market screener criteria field.
+      operationId: getScreenerCriteriaMinMax
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: field
+          in: query
+          description: "The field for which to retrieve minimum and maximum values."
+          required: true
+          schema:
+            type: string
+            enum:
+              - per
+              - pbr
+              - roe
+              - divYield
+              - grossMargin
+              - netMargin
+              - quickRatio
+              - debt2Equity
+      responses:
+        200:
+          description: Successfully retrieved min and max values
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  responseCode:
+                    type: integer
+                    example: 0
+                  data:
+                    type: object
+                    properties:
+                      min:
+                        type: number
+                        example: 0.00369
+                      max:
+                        type: number
+                        example: 22166670
+                  responseTime:
+                    type: string
+                    example: "2023-10-19 09:44"
+        400:
+          description: Invalid parameters
+        401:
+          description: Authentication failed
+        404:
+          description: Data not found
+        500:
+          description: Unexpected server error

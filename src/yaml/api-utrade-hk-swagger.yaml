@@ -1,0 +1,49 @@
+openapi: 3.0.1
+info:
+  title: LabCI Innovation Data API(Staging)
+  description: This is a nodejs service to provide innovation restful data APIs.
+  license:
+    name: LabCI Limited
+    url: https://www.labci.com
+  version: UAT-1.3.4.2
+servers:
+  - url: https://t1hkhsm2.trkd-hs.com/ufuture/
+  - url: /ufuture
+tags:
+  - name: Auth
+    description: Authentication part.
+
+paths:
+  /auth/token:
+    post:
+      tags:
+        - Auth
+      summary: Genereate JWT token with payload
+      description: Return generated JWT token.
+      operationId: generateToken
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: "yourUserName"
+                password:
+                  type: string
+                  example: "yourPassword"
+      responses:
+        201:
+          description: The token is returned in response header
+          content: {}
+        403:
+          description: Invalid username or password
+          content: {}
+        500:
+          description: Internal server error
+          content: {}

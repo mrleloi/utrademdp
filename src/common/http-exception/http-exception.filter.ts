@@ -1,3 +1,4 @@
+/*
 import { LoggerService } from '@modules/logger/logger.service';
 import {
   ArgumentsHost,
@@ -61,3 +62,4 @@ export class HttpExceptionFilter implements ExceptionFilter {
     );
   }
 }
+*/

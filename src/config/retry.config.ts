@@ -9,11 +9,11 @@ export const retryConfig = {
   operations: {
     tokenRefresh: {
       retries: 5,
-      minTimeout: 500
+      minTimeout: 500,
     },
     auditLog: {
       retries: 2,
-      minTimeout: 100
-    }
-  }
+      minTimeout: 100,
+    },
+  },
 };

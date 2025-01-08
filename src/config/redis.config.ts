@@ -1,3 +1,4 @@
+/*
 import { RedisModuleOptions } from '@liaoliaots/nestjs-redis';
 
 export const redisConfig: RedisModuleOptions = {
@@ -10,4 +11,4 @@ export const redisConfig: RedisModuleOptions = {
       instruments: 2,
     },
   },
-}
+}*/

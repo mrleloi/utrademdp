@@ -1,16 +1,41 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import config from '@config/app.config';
 
 @Injectable()
 export class BaseHttpService {
   protected readonly axios: AxiosInstance;
 
-  constructor(baseURL: string) {
+  constructor(baseURL: string, timeout: number) {
     this.axios = axios.create({
       baseURL,
-      timeout: config.axios.timeout,
+      timeout,
+      validateStatus: null,
+      transformResponse: [
+        (data) => {
+          return data;
+        },
+      ],
     });
+  }
+
+  async request<T>(
+    method: string,
+    url: string,
+    config?: AxiosRequestConfig,
+  ): Promise<any> {
+    const response = await this.axios.request({
+      method,
+      url,
+      ...config,
+      headers: this.sanitizeHeaders(config?.headers || {}),
+      responseType: 'text', // Force response as text
+    });
+
+    return {
+      status: response.status,
+      headers: response.headers,
+      data: response.data,
+    };
   }
 
   protected sanitizeHeaders(headers: any): any {
@@ -22,15 +47,7 @@ export class BaseHttpService {
   }
 
   async get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    try {
-      const response = await this.axios.get<T>(url, {
-        ...config,
-        headers: this.sanitizeHeaders(config?.headers || {}),
-      });
-      return response.data;
-    } catch (error) {
-      throw new HttpException(error.message, error.response?.status || 500);
-    }
+    return this.request('GET', url, config);
   }
 
   async post<T>(
@@ -38,14 +55,6 @@ export class BaseHttpService {
     data?: any,
     config?: AxiosRequestConfig,
   ): Promise<T> {
-    try {
-      const response = await this.axios.post<T>(url, data, {
-        ...config,
-        headers: this.sanitizeHeaders(config?.headers || {}),
-      });
-      return response.data;
-    } catch (error) {
-      throw new HttpException(error.message, error.response?.status || 500);
-    }
+    return this.request('POST', url, { ...config, data });
   }
 }

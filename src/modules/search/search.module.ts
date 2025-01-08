@@ -1,3 +1,4 @@
+/*
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SearchHistory } from './entities/search.entity';
@@ -14,3 +15,4 @@ import { TradeableSearchHistory } from './entities/tradeable-search.entity';
   controllers: [SearchController],
 })
 export class SearchModule {}
+*/

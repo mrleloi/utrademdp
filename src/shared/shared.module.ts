@@ -1,9 +1,9 @@
 import { Global, Module } from '@nestjs/common';
-import { HttpServices } from './http/http-services';
+import { HttpModule } from './http/http.module';
 
 @Global()
 @Module({
-  providers: [HttpServices],
-  exports: [HttpServices],
+  imports: [HttpModule],
+  exports: [HttpModule],
 })
 export class SharedModule {}
