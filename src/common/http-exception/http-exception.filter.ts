@@ -1,4 +1,3 @@
-/*
 import { LoggerService } from '@modules/logger/logger.service';
 import {
   ArgumentsHost,
@@ -21,8 +20,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const { method, url, params, body } = request;
     const ip = request.headers['x-real-ip'];
 
-    let status: any = HttpStatus.INTERNAL_SERVER_ERROR;
-    let message = 'Internal server error';
+    let status: number = HttpStatus.INTERNAL_SERVER_ERROR;
+    let message: string | string[] = 'Internal server error';
 
     if (exception instanceof HttpException) {
       status = exception.getStatus();
@@ -32,16 +31,17 @@ export class HttpExceptionFilter implements ExceptionFilter {
         message = exceptionResponse;
       } else if (typeof exceptionResponse === 'object') {
         const resObj: any = exceptionResponse;
-        message = resObj.message || message;
+        // Handle both string and array messages
+        message = resObj.message || resObj.error || message;
       }
     }
 
     const responseData = {
       statusCode: status,
       responseTime: moment().format('YYYY-MM-DD HH:mm:ss'),
-      data: null,
       errors: message,
     };
+
     response.status(status).json(responseData);
 
     const logPayload = {
@@ -50,16 +50,14 @@ export class HttpExceptionFilter implements ExceptionFilter {
       response: responseData,
       error: exception.stack,
     };
+
+    // Blind sensitive data
     for (const variable of AppConstant.secureVariable) {
       if (logPayload?.body[variable]) {
         logPayload.body[variable] = 'blind data';
       }
     }
-    this.logger.error(
-      url,
-      `[${ip}] [${method}] [0ms] ${url}`,
-      logPayload ?? {},
-    );
+
+    this.logger.error(url, `[${ip}] [${method}] ${url}`, logPayload ?? {});
   }
 }
-*/

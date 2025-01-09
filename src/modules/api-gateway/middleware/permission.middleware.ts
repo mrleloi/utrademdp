@@ -27,7 +27,7 @@ export class PermissionMiddleware implements NestMiddleware {
       return next();
     }
 
-    const username = req['user'];
+    const username = req['apiUser'];
     if (!username) {
       throw new UnauthorizedException();
     }
@@ -41,17 +41,13 @@ export class PermissionMiddleware implements NestMiddleware {
     // Ensure user exists in database
     const apiUser = await this.apiUserService.findOrCreateUser(username);
 
-    const endpoint = await this.matchEndpoint(
-      cleanPath,
-      req.method,
-      groupId
-    );
+    const endpoint = await this.matchEndpoint(cleanPath, req.method, groupId);
 
     if (!endpoint) {
       console.log('No matching endpoint found for:', {
         path: cleanPath,
         method: req.method,
-        groupId
+        groupId,
       });
       throw new NotFoundException('Endpoint not found');
     }
@@ -101,7 +97,10 @@ export class PermissionMiddleware implements NestMiddleware {
     return null;
   }
 
-  private extractPathInfo(fullPath: string): { groupId: string | null; cleanPath: string } {
+  private extractPathInfo(fullPath: string): {
+    groupId: string | null;
+    cleanPath: string;
+  } {
     const pathMappings = {
       '/api-gateway/innodata': 'INNO_DATA',
       '/api-gateway/utrade-sg': 'UTRADE_SG',
@@ -127,7 +126,7 @@ export class PermissionMiddleware implements NestMiddleware {
 
     const regexPattern = escapedPattern.replace(
       /{(\w+)}/g,
-      (_, name) => `(?<${name}>[^/]+)`
+      (_, name) => `(?<${name}>[^/]+)`,
     );
 
     return new RegExp(`^${regexPattern}$`);

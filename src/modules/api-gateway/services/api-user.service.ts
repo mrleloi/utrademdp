@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { PermissionLevel } from '@shared/constants';
 import { ApiUser } from '../../../database/entities/api_users.entity';
 import { ApiUserPermission } from '../../../database/entities/api_user_permissions.entity';
 import { ApiEndpoint } from '../../../database/entities/api_endpoints.entity';

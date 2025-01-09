@@ -12,7 +12,9 @@ export class SwaggerService {
   getSpec(apiGroupId: keyof typeof API_IDS) {
     const spec = this.swaggerSpecs[apiGroupId];
     if (!spec) {
-      throw new Error(`Swagger spec for ${apiGroupId} not found. Make sure it was loaded properly.`);
+      throw new Error(
+        `Swagger spec for ${apiGroupId} not found. Make sure it was loaded properly.`,
+      );
     }
     return SwaggerTransformer.transform(spec);
   }

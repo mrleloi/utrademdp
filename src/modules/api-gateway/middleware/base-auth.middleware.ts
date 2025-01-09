@@ -35,7 +35,7 @@ export abstract class BaseAuthMiddleware implements NestMiddleware {
 
     try {
       const decoded = await this.tokenDecoder.decode(token, this.getConfig());
-      req['user'] = decoded['username'];
+      req['apiUser'] = decoded['username'];
       next();
     } catch (error) {
       throw new UnauthorizedException('Invalid token');

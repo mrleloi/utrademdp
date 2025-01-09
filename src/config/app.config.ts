@@ -3,11 +3,11 @@ require('dotenv').config();
 
 export default {
   app: {
-    name: 'KGI Securities',
-    description: 'Internal APIs for KGI',
+    name: 'Utrade MDP',
+    description: 'Utrade MDP',
     version: '0.0.1',
     url: `${process.env.BASE_URL}`.trim() || 'http://localhost:3057/',
-    apiPrefix: process.env.API_PREFIX || 'apikgitrader',
+    apiPrefix: process.env.API_PREFIX || 'api',
   },
   http: {
     host: `${process.env.HOST || '0.0.0.0'}`.trim(),
@@ -18,8 +18,8 @@ export default {
   },
   swagger: {
     enabled: process.env.SWAGGER_ENABLED || 'true',
-    username: process.env.SWAGGER_USERNAME || 'kgi',
-    password: process.env.SWAGGER_PASSWORD || 'kgi2024',
+    username: process.env.SWAGGER_USERNAME || 'utrademdp',
+    password: process.env.SWAGGER_PASSWORD || 'utrademdp',
   },
   swaggerAPI: {
     enabledApiInnoData: process.env.SWAGGER_API_INNO_DATA_ENABLED || 'true',

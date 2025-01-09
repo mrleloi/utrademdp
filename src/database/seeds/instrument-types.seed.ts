@@ -12,13 +12,13 @@ export const seedInstrumentTypes = async (dataSource: DataSource) => {
 
   for (const type of defaultTypes) {
     const existing = await instrumentTypeRepo.findOne({
-      where: { type_code: type.type_code }
+      where: { type_code: type.type_code },
     });
 
     if (!existing) {
       await instrumentTypeRepo.save({
         ...type,
-        created_at: new Date()
+        created_at: new Date(),
       });
     }
   }

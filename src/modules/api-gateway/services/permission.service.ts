@@ -1,8 +1,5 @@
 import { EntityManager, Repository } from 'typeorm';
-import {
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
 import { PermissionLevel } from '@shared/constants';
 import { ApiUserPermission } from '../../../database/entities/api_user_permissions.entity';

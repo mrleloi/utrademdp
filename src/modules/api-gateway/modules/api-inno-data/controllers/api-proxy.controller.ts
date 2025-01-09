@@ -2,7 +2,9 @@ import { All, Controller, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { InnoDataApiProxyService } from '@modules/api-gateway/modules/api-inno-data/services/api-proxy.service';
 import { AccessLogService } from '@modules/api-gateway/services/access-log.service';
+import { ApiExcludeController } from '@nestjs/swagger';
 
+@ApiExcludeController()
 @Controller('api-gateway/innodata')
 export class InnoDataApiProxyController {
   constructor(
@@ -14,7 +16,7 @@ export class InnoDataApiProxyController {
   async proxy(@Req() request: Request, @Res() response: Response) {
     const proxyResponse = await this.apiProxyService.proxy(request);
 
-    if (request['endpoint'] && request['user']) {
+    if (request['endpoint'] && request['apiUser']) {
       const instrumentParams = request['instrumentParams'] || {};
 
       this.accessLogService

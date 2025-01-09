@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { ApiGroup } from '../../database/entities/api_groups.entity';
 import { ApiEndpoint } from '../../database/entities/api_endpoints.entity';
 import { API_IDS } from '@shared/constants';
-import { PermissionService } from "@modules/api-gateway/services/permission.service";
+import { PermissionService } from '@modules/api-gateway/services/permission.service';
 
 interface Parameter {
   name: string;
@@ -152,7 +152,9 @@ export class SwaggerAnalyzerService {
       });
 
       // Auto-grant permissions to all users
-      await this.permissionService.grantDefaultPermissionsToAllUsers(newEndpoint);
+      await this.permissionService.grantDefaultPermissionsToAllUsers(
+        newEndpoint,
+      );
     }
   }
 }

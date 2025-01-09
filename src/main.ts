@@ -72,16 +72,16 @@ async function initializeSwaggerAndDatabase(app: INestApplication) {
     );
   }
 
-  if (config.swaggerAPI.enabledApiUtradeSG === 'true') {
+  if (config.swaggerAPI.enabledApiUfuture === 'true') {
     swaggerTasks.push(
       Promise.resolve().then(async () => {
-        console.log('Analyzing UTrade SG API swagger...');
+        console.log('Analyzing Ufuture API swagger...');
         const spec = swaggerService.loadSpec(
-          config.swaggerAPI.pathYamlApiUtradeSG,
-          'UTRADE_SG',
+          config.swaggerAPI.pathYamlApiUfuture,
+          'UFUTURE',
         );
-        await swaggerAnalyzer.analyzeAndSaveApiSpec(spec, 'UTRADE_SG');
-        console.log('Finished analyzing UTrade SG API swagger');
+        await swaggerAnalyzer.analyzeAndSaveApiSpec(spec, 'UFUTURE');
+        console.log('Finished analyzing Ufuture API swagger');
       }),
     );
   }
@@ -106,10 +106,6 @@ function initializeAppSwagger(app: INestApplication) {
     .addBearerAuth()
     .setVersion(apiVersion)
     .addServer(baseUrl)
-    .addApiKey(
-      { scheme: 'apikey', type: 'apiKey', in: 'header', name: 'x-api-key' },
-      'apikey',
-    )
     .build();
 
   const document = SwaggerModule.createDocument(app, options);

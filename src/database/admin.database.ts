@@ -1,19 +1,29 @@
-/*
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AccessLog } from './entities/access-log.entity';
-import { AdminUser } from './entities/admin-user.entity';
-import { AdminRole } from './entities/admin-role.entity';
+import { User } from './entities/user.entity';
+import { ApiAccessLog } from './entities/api_access_logs.entity';
+import { ApiAccessLogInstrument } from './entities/api_access_log_instruments.entity';
+import { ApiEndpoint } from './entities/api_endpoints.entity';
+import { ApiGroup } from './entities/api_groups.entity';
+import { ApiUser } from './entities/api_users.entity';
+import { ApiUserPermission } from './entities/api_user_permissions.entity';
+import { InstrumentType } from './entities/instrument_types.entity';
+import { Instrument } from './entities/instrument.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
-      AccessLog,
-      AdminUser,
-      AdminRole
-    ])
+      ApiAccessLog,
+      ApiAccessLogInstrument,
+      ApiEndpoint,
+      ApiGroup,
+      ApiUser,
+      ApiUserPermission,
+      InstrumentType,
+      Instrument,
+      User,
+    ]),
   ],
-  exports: [TypeOrmModule]
+  exports: [TypeOrmModule],
 })
 export class AdminDatabaseModule {}
-*/

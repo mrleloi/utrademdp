@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
 @Injectable()
@@ -18,7 +18,7 @@ export class BaseHttpService {
     });
   }
 
-  async request<T>(
+  async request(
     method: string,
     url: string,
     config?: AxiosRequestConfig,

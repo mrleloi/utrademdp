@@ -1,62 +1,22 @@
 {
   "openapi": "3.0.0",
   "paths": {
-    "/": {
-      "get": {
-        "operationId": "AppController_getHello",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api-gateway/innodata/*": {
-      "get": {
-        "operationId": "InnoDataApiProxyController_proxy_get",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
+    "/admin/auth/login": {
       "post": {
-        "operationId": "InnoDataApiProxyController_proxy_post",
+        "operationId": "AuthController_login",
         "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
         "responses": {
-          "200": {
+          "201": {
             "description": ""
           },
           "400": {
@@ -73,124 +33,89 @@
           },
           "500": {
             "description": "Internal Server Error"
-          }
-        }
-      },
-      "put": {
-        "operationId": "InnoDataApiProxyController_proxy_put",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "delete": {
-        "operationId": "InnoDataApiProxyController_proxy_delete",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "patch": {
-        "operationId": "InnoDataApiProxyController_proxy_patch",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "options": {
-        "operationId": "InnoDataApiProxyController_proxy_options",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      },
-      "head": {
-        "operationId": "InnoDataApiProxyController_proxy_head",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      },
-      "search": {
-        "operationId": "InnoDataApiProxyController_proxy_search",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
           }
         }
       }
     },
-    "/api-gateway/ufuture/auth/login": {
+    "/admin/auth/register": {
+      "post": {
+        "operationId": "AuthController_register",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/admin/dashboard": {
       "get": {
-        "operationId": "UfutureApiProxyController_login",
+        "operationId": "AdminController_getDashboard",
+        "summary": "Get dashboard access",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Dashboard information"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/admin/access-log-instruments/usage-by-type": {
+      "get": {
+        "operationId": "AccessLogInstrumentsController_getUsageByType",
+        "summary": "Get instrument usage statistics by type",
         "parameters": [
           {
-            "name": "uid",
-            "required": true,
+            "name": "startDate",
+            "required": false,
             "in": "query",
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "pwd",
-            "required": true,
+            "name": "endDate",
+            "required": false,
             "in": "query",
             "schema": {
               "type": "string"
@@ -216,13 +141,74 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "tags": [
+          "Access Log Instruments"
+        ]
       }
     },
-    "/api-gateway/ufuture/*": {
+    "/admin/access-logs": {
       "get": {
-        "operationId": "UfutureApiProxyController_proxy_get",
-        "parameters": [],
+        "operationId": "AccessLogsController_findAll",
+        "summary": "Get access logs with filtering and pagination",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "endpointId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "startDate",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "endDate",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": ""
@@ -242,136 +228,34 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
-      },
-      "post": {
-        "operationId": "UfutureApiProxyController_proxy_post",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "put": {
-        "operationId": "UfutureApiProxyController_proxy_put",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "delete": {
-        "operationId": "UfutureApiProxyController_proxy_delete",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "patch": {
-        "operationId": "UfutureApiProxyController_proxy_patch",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "options": {
-        "operationId": "UfutureApiProxyController_proxy_options",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      },
-      "head": {
-        "operationId": "UfutureApiProxyController_proxy_head",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      },
-      "search": {
-        "operationId": "UfutureApiProxyController_proxy_search",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
+        },
+        "tags": [
+          "Access Logs"
+        ]
       }
     },
-    "/api-gateway/ufuture/!auth/login": {
+    "/admin/access-logs/error-stats": {
       "get": {
-        "operationId": "UfutureApiProxyController_proxy_get",
-        "parameters": [],
+        "operationId": "AccessLogsController_getErrorStats",
+        "summary": "Get error statistics",
+        "parameters": [
+          {
+            "name": "startDate",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "endDate",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": ""
@@ -391,163 +275,37 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
-      },
-      "post": {
-        "operationId": "UfutureApiProxyController_proxy_post",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "put": {
-        "operationId": "UfutureApiProxyController_proxy_put",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "delete": {
-        "operationId": "UfutureApiProxyController_proxy_delete",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "patch": {
-        "operationId": "UfutureApiProxyController_proxy_patch",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "options": {
-        "operationId": "UfutureApiProxyController_proxy_options",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      },
-      "head": {
-        "operationId": "UfutureApiProxyController_proxy_head",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      },
-      "search": {
-        "operationId": "UfutureApiProxyController_proxy_search",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
+        },
+        "tags": [
+          "Access Logs"
+        ]
       }
     },
-    "/api-gateway/utrade-hk/*": {
-      "get": {
-        "operationId": "UtradeHkApiProxyController_proxy_get",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
+    "/admin/api-endpoints": {
       "post": {
-        "operationId": "UtradeHkApiProxyController_proxy_post",
+        "operationId": "ApiEndpointsController_create",
+        "summary": "Create new API endpoint",
         "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEndpointDto"
+              }
+            }
+          }
+        },
         "responses": {
-          "200": {
-            "description": ""
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EndpointResponseDto"
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad Request"
@@ -564,14 +322,53 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "tags": [
+          "API Endpoints"
+        ]
       },
-      "put": {
-        "operationId": "UtradeHkApiProxyController_proxy_put",
-        "parameters": [],
+      "get": {
+        "operationId": "ApiEndpointsController_findAll",
+        "summary": "Get all API endpoints",
+        "parameters": [
+          {
+            "name": "groupId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "method",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EndpointResponseDto"
+                  }
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad Request"
@@ -588,91 +385,36 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
-      },
-      "delete": {
-        "operationId": "UtradeHkApiProxyController_proxy_delete",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "patch": {
-        "operationId": "UtradeHkApiProxyController_proxy_patch",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "options": {
-        "operationId": "UtradeHkApiProxyController_proxy_options",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      },
-      "head": {
-        "operationId": "UtradeHkApiProxyController_proxy_head",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
-      },
-      "search": {
-        "operationId": "UtradeHkApiProxyController_proxy_search",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        }
+        },
+        "tags": [
+          "API Endpoints"
+        ]
       }
     },
-    "/api-gateway/utrade-sg/*": {
+    "/admin/api-endpoints/{id}": {
       "get": {
-        "operationId": "UtradeSgApiProxyController_proxy_get",
-        "parameters": [],
+        "operationId": "ApiEndpointsController_findOne",
+        "summary": "Get API endpoint by id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EndpointResponseDto"
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad Request"
@@ -689,38 +431,44 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
-      },
-      "post": {
-        "operationId": "UtradeSgApiProxyController_proxy_post",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        },
+        "tags": [
+          "API Endpoints"
+        ]
       },
       "put": {
-        "operationId": "UtradeSgApiProxyController_proxy_put",
-        "parameters": [],
+        "operationId": "ApiEndpointsController_update",
+        "summary": "Update API endpoint",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEndpointDto"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EndpointResponseDto"
+                }
+              }
+            }
           },
           "400": {
             "description": "Bad Request"
@@ -737,11 +485,24 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "tags": [
+          "API Endpoints"
+        ]
       },
       "delete": {
-        "operationId": "UtradeSgApiProxyController_proxy_delete",
-        "parameters": [],
+        "operationId": "ApiEndpointsController_remove",
+        "summary": "Delete API endpoint",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": ""
@@ -761,11 +522,209 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
-      },
-      "patch": {
-        "operationId": "UtradeSgApiProxyController_proxy_patch",
+        },
+        "tags": [
+          "API Endpoints"
+        ]
+      }
+    },
+    "/admin/api-groups": {
+      "post": {
+        "operationId": "ApiGroupsController_create",
+        "summary": "Create new API group",
         "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGroupDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "API Groups"
+        ]
+      },
+      "get": {
+        "operationId": "ApiGroupsController_findAll",
+        "summary": "Get all API groups",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GroupResponseDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "API Groups"
+        ]
+      }
+    },
+    "/admin/api-groups/{id}": {
+      "get": {
+        "operationId": "ApiGroupsController_findOne",
+        "summary": "Get API group by id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "API Groups"
+        ]
+      },
+      "put": {
+        "operationId": "ApiGroupsController_update",
+        "summary": "Update API group",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateGroupDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroupResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "API Groups"
+        ]
+      },
+      "delete": {
+        "operationId": "ApiGroupsController_remove",
+        "summary": "Delete API group",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": ""
@@ -785,40 +744,905 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
-      },
-      "options": {
-        "operationId": "UtradeSgApiProxyController_proxy_options",
-        "parameters": [],
+        },
+        "tags": [
+          "API Groups"
+        ]
+      }
+    },
+    "/admin/api-groups/{id}/statistics": {
+      "get": {
+        "operationId": "ApiGroupsController_getStatistics",
+        "summary": "Get API group usage statistics",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": ""
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
-        }
-      },
-      "head": {
-        "operationId": "UtradeSgApiProxyController_proxy_head",
+        },
+        "tags": [
+          "API Groups"
+        ]
+      }
+    },
+    "/admin/api-permissions": {
+      "post": {
+        "operationId": "ApiUserPermissionsController_create",
+        "summary": "Create new permission",
         "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePermissionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "API User Permissions"
+        ]
+      },
+      "get": {
+        "operationId": "ApiUserPermissionsController_findAll",
+        "summary": "Get all permissions",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "groupId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "isActive",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": ""
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
-        }
-      },
-      "search": {
-        "operationId": "UtradeSgApiProxyController_proxy_search",
-        "parameters": [],
+        },
+        "tags": [
+          "API User Permissions"
+        ]
+      }
+    },
+    "/admin/api-permissions/{id}": {
+      "get": {
+        "operationId": "ApiUserPermissionsController_findOne",
+        "summary": "Get permission by id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": ""
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
-        }
+        },
+        "tags": [
+          "API User Permissions"
+        ]
+      },
+      "put": {
+        "operationId": "ApiUserPermissionsController_update",
+        "summary": "Update permission",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePermissionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "API User Permissions"
+        ]
+      },
+      "delete": {
+        "operationId": "ApiUserPermissionsController_remove",
+        "summary": "Delete permission",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "API User Permissions"
+        ]
+      }
+    },
+    "/admin/api-permissions/{id}/toggle": {
+      "put": {
+        "operationId": "ApiUserPermissionsController_toggleStatus",
+        "summary": "Toggle permission status",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "API User Permissions"
+        ]
+      }
+    },
+    "/admin/api-users": {
+      "post": {
+        "operationId": "ApiUsersController_create",
+        "summary": "Create new API user",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateApiUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "API Users"
+        ]
+      },
+      "get": {
+        "operationId": "ApiUsersController_findAll",
+        "summary": "Get all API users",
+        "parameters": [
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "API Users"
+        ]
+      }
+    },
+    "/admin/api-users/{id}": {
+      "get": {
+        "operationId": "ApiUsersController_findOne",
+        "summary": "Get API user by id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "API Users"
+        ]
+      },
+      "put": {
+        "operationId": "ApiUsersController_update",
+        "summary": "Update API user",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateApiUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "API Users"
+        ]
+      },
+      "delete": {
+        "operationId": "ApiUsersController_remove",
+        "summary": "Delete API user",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "API Users"
+        ]
+      }
+    },
+    "/admin/api-users/{id}/statistics": {
+      "get": {
+        "operationId": "ApiUsersController_getUserStatistics",
+        "summary": "Get API user statistics",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "API Users"
+        ]
+      }
+    },
+    "/admin/api-users/{id}/access-history": {
+      "get": {
+        "operationId": "ApiUsersController_getUserAccessHistory",
+        "summary": "Get API user access history",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "startDate",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "endDate",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "API Users"
+        ]
+      }
+    },
+    "/admin/instrument-types": {
+      "post": {
+        "operationId": "InstrumentTypesController_create",
+        "summary": "Create new instrument type",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateInstrumentTypeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InstrumentTypeResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "Instrument Types"
+        ]
+      },
+      "get": {
+        "operationId": "InstrumentTypesController_findAll",
+        "summary": "Get all instrument types",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InstrumentTypeResponseDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "Instrument Types"
+        ]
+      }
+    },
+    "/admin/instrument-types/{id}": {
+      "get": {
+        "operationId": "InstrumentTypesController_findOne",
+        "summary": "Get instrument type by id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InstrumentTypeResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "Instrument Types"
+        ]
+      },
+      "put": {
+        "operationId": "InstrumentTypesController_update",
+        "summary": "Update instrument type",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateInstrumentTypeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InstrumentTypeResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "Instrument Types"
+        ]
+      },
+      "delete": {
+        "operationId": "InstrumentTypesController_remove",
+        "summary": "Delete instrument type",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "Instrument Types"
+        ]
+      }
+    },
+    "/admin/instrument-types/{id}/statistics": {
+      "get": {
+        "operationId": "InstrumentTypesController_getStatistics",
+        "summary": "Get instrument type usage statistics",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "Instrument Types"
+        ]
       }
     }
   },
   "info": {
-    "title": "KGI Securities API spec",
-    "description": "Internal APIs for KGI",
+    "title": "Utrade MDP API spec",
+    "description": "Utrade MDP",
     "version": "0.0.1",
     "contact": {}
   },
@@ -834,14 +1658,95 @@
         "scheme": "bearer",
         "bearerFormat": "JWT",
         "type": "http"
-      },
-      "apikey": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "x-api-key",
-        "scheme": "apikey"
       }
     },
-    "schemas": {}
+    "schemas": {
+      "LoginDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "RegisterDto": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "username",
+          "email",
+          "password"
+        ]
+      },
+      "CreateEndpointDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "EndpointResponseDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateEndpointDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateGroupDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "GroupResponseDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateGroupDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreatePermissionDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdatePermissionDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateApiUserDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateApiUserDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateInstrumentTypeDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "InstrumentTypeResponseDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateInstrumentTypeDto": {
+        "type": "object",
+        "properties": {}
+      }
+    }
   }
 }

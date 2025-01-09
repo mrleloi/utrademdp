@@ -11,7 +11,9 @@ import { UfutureApiProxyService } from '../services/api-proxy.service';
 import { ConfigService } from '@nestjs/config';
 import { TokenEncoderService } from '@modules/api-gateway/encoders/market-data-token.encoder';
 import { API_IDS } from '@shared/constants';
+import { ApiExcludeController } from '@nestjs/swagger';
 
+@ApiExcludeController()
 @Controller('api-gateway/ufuture')
 export class UfutureApiProxyController {
   private readonly secretKey: string;
